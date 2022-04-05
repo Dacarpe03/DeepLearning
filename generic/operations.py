@@ -1,11 +1,18 @@
 import numpy as np
 
-from typing import Callable
+from typing import Callable, List
 from numpy import ndarray
 
 
+# A Function takes in an ndarrayy as a argument and produces an ndarray
+Array_Function = Callable[[ndarray], ndarray]
+
+# A Chain is a list of functions
+Chain = List[Array_Function]
+
+
 def deriv(
-        func: Callable[[ndarray], ndarray],
+        func: Array_Function,
         input_: ndarray,
         delta: float = 0.001
         ) -> ndarray:
@@ -18,6 +25,27 @@ def deriv(
     """
 
     return (func(input_ + delta) - func(input_ - delta)) / (2 * delta)
+
+
+def chain_length_2(
+        chain: Chain,
+        x: ndarray
+        ) -> ndarray:
+    """
+    Evaluates two functions in a row, in a "Chain". (Applying in the list order)
+    :param chain: the chain of functions
+    :param x: the input ndarray
+    :return: the result ndarray after performing the chain functions on it
+    """
+    if len(chain) == 2:
+        f1 = chain[0]
+        f2 = chain[1]
+
+        return f2(f1(x))
+    else:
+        msg = "Error: chain_length_2 only supports a chain of two functions"
+        print(msg)
+        return None
 
 
 def square(
