@@ -27,6 +27,36 @@ def deriv(
     return (func(input_ + delta) - func(input_ - delta)) / (2 * delta)
 
 
+def chain_deriv_2(
+        chain: Chain,
+        input_range: ndarray
+        ) -> ndarray:
+    """
+    Uses teh chain rule to compute the derivative of two nested functions:
+    :param chain: chain of functions
+    :param input_range: input ndarray for which to calculate the chain derivative
+    :return: results of evaluating the chain derivate in the input points
+    """
+    if len(chain) != 2:
+        msg = "This function requires 'Chain' objects of length 2"
+        print(msg)
+        return None
+
+    if input_range.ndim != 1:
+        msg = "This function requires a 1 dimensional ndarray as input_range"
+        print(msg)
+        return None
+
+    f1 = chain[0]
+    f2 = chain[1]
+
+    f1_of_x = f1(input_range)
+    deriv_f1_dx = deriv(f1, input_range)
+    deriv_f2_du = deriv(f2, f1_of_x)
+
+    return deriv_f2_du * deriv_f1_dx
+
+
 def chain_length_2(
         chain: Chain,
         x: ndarray
@@ -37,7 +67,7 @@ def chain_length_2(
     :param x: the input ndarray
     :return: the result ndarray after performing the chain functions on it
     """
-    if len(chain) == 2:
+    if len(chain) != 2:
         f1 = chain[0]
         f2 = chain[1]
 
@@ -68,3 +98,14 @@ def leaky_relu(
     :return: ndarray with the ReLU operation applied to each of its elements
     """
     return np.maximum(0.2 * x, x)
+
+
+def sigmoid(
+        x: ndarray,
+        ) -> ndarray:
+    """
+    Apply the sigmoid function to each element in the input ndarray
+    :param x: input ndarray
+    :return: ndarray with the sigmoid function applied to each one of the elements
+    """
+    return 1 / (1 + np.exp(-x))
