@@ -129,3 +129,50 @@ def sigmoid(x: ndarray,
     :return: ndarray with the sigmoid function applied to each one of the elements
     """
     return 1 / (1 + np.exp(-x))
+
+
+def gamma(x: ndarray,
+          y: ndarray
+          ) -> ndarray:
+    """
+    Gamma function that adds x and y
+    :param x: x array
+    :param y: y array
+    :return: x+y array
+    """
+    return x + y
+
+
+def multiple_inputs_add(x: ndarray,
+                        y: ndarray,
+                        sigma: Array_Function
+                        ) -> float:
+    """
+    Function with multiple inputs and addition, forward pass
+
+    :param x: first input of the function
+    :param y: second input of the function
+    :param sigma: sigma function
+    :return: result of the operation
+    """
+    assert x.shape == y.shape
+    a = gamma(x, y)
+    return sigma(a)
+
+
+def multiple_inputs_add_backward(x: ndarray,
+                                 y: ndarray,
+                                 sigma: Array_Function) -> {float, float}:
+    """
+    Computes the derivative of the function forward "pass"
+    :param x:
+    :param y:
+    :param sigma:
+    :return:
+    """
+    a = gamma(x, y)
+    dsigma_da = deriv(sigma, a)
+    da_dx = deriv(gamma, x)
+    da_dy = deriv(gamma, y)
+
+    return dsigma_da * da_dx, dsigma_da * da_dy
