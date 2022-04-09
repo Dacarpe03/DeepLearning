@@ -204,3 +204,20 @@ def matmul_backward_first(X: ndarray,
     """
     dN_dX = np.transpose(W, (1, 0))
     return dN_dX
+
+
+def matrix_forward_extra(X: ndarray,
+                         W:ndarray,
+                         sigma: Array_Function) -> ndarray:
+    """
+    Computes the forward pass of a function involving matrix multiplication, one extra function
+    :param X: First matrix
+    :param W: Second matrix
+    :param sigma: Extra function
+    :return: result sigma(mat_mul_forward(X,Y))
+    """
+
+    N = matmul_forward(X, W)
+    S = sigma(N)
+
+    return S
