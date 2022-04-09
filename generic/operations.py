@@ -192,3 +192,15 @@ def matmul_forward(X: ndarray,
     N = np.dot(X, W)
 
     return N
+
+
+def matmul_backward_first(X: ndarray,
+                          W: ndarray) -> ndarray:
+    """
+    Computes the backward pass of a matrix multiplication with respect to the first argument
+    :param X: X matrix
+    :param W: W matrix
+    :return: derivative of matmul operation with respect to X
+    """
+    dN_dX = np.transpose(W, (1, 0))
+    return dN_dX
