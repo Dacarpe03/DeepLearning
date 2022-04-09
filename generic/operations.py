@@ -176,3 +176,19 @@ def multiple_inputs_add_backward(x: ndarray,
     da_dy = deriv(gamma, y)
 
     return dsigma_da * da_dx, dsigma_da * da_dy
+
+
+def matmul_forward(X: ndarray,
+                   W: ndarray
+                   ) -> ndarray:
+    """
+    Computs the forward pass of a matrix multiplication
+    :param X: X matrix
+    :param W: W matrix
+    :return: The product matrix
+    """
+    assert X.shape[1] == W.shape[0] .format(X.shape[1], W.shape[0])
+
+    N = np.dot(X, W)
+
+    return N
